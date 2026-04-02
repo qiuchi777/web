@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>学习内容</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            min-height: 100vh;
+            padding: 24px;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background: #eaf4ff;
+        }
+        .wrap {
+            max-width: 820px;
+            margin: 0 auto;
+            background: #fff;
+            border: 1px solid #9ca3af;
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        .stack {
+            margin-top: 10px;
+        }
+
+        .stack::after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+        .stack-item {
+            float: left;
+            width: 48%;
+            margin: 1%;
+            padding: 12px 14px;
+            border: 1px solid #d1d5db;
+            border-radius: 10px;
+            background: #f8fbff;
+            min-height: 110px;
+        }
+
+        .stack-item h2 {
+            margin: 0 0 8px;
+            font-size: 1.05rem;
+            text-align: center;
+            color: #1f2937;
+        }
+
+        .stack-list {
+            list-style: none;
+            padding-left: 0;
+            margin: 0;
+            color: #374151;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 520px) {
+            .stack-item {
+                float: none;
+                width: 100%;
+                margin: 0 0 12px;
+            }
+        }
+        h1 { margin: 0 0 12px; text-align: center; }
+        .back-link-wrap { text-align: center; }
+        a { color: #2c70ff; text-decoration: none; font-weight: 600; }
+        a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="wrap">
+        <h1>学习内容</h1>
+
+        <div class="stack">
+            <section class="stack-item">
+                <h2>程序设计基础</h2>
+                <ol class="stack-list">
+                    <li>C 语言 / Java 基础语法</li>
+                    <li>面向对象基础（类、封装、继承）</li>
+                    <li>常见算法题练习（入门难度）</li>
+                </ol>
+            </section>
+            <section class="stack-item">
+                <h2>数据结构与算法</h2>
+                <ol class="stack-list">
+                    <li>线性表、栈、队列、链表</li>
+                    <li>树与图的基本概念</li>
+                    <li>排序与查找的基本实现</li>
+                </ol>
+            </section>
+            <section class="stack-item">
+                <h2>数据库基础</h2>
+                <ol class="stack-list">
+                    <li>MySQL 基本语法（增删改查）</li>
+                    <li>多表查询与简单索引</li>
+                    <li>课程作业中的数据库设计</li>
+                </ol>
+            </section>
+            <section class="stack-item">
+                <h2>计算机基础课程</h2>
+                <ol class="stack-list">
+                    <li>计算机组成原理（入门）</li>
+                    <li>操作系统与计算机网络基础</li>
+                    <li>Git 与开发工具的日常使用</li>
+                </ol>
+            </section>
+        </div>
+
+        <p class="back-link-wrap"><a href="main.html">返回主界面</a></p>
+    </div>
+</body>
+</html>

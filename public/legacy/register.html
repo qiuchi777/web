@@ -1,0 +1,112 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>个人生活注册页面</title>
+		<link rel="stylesheet" type="text/css" href="css/register.css" />
+		<script>
+			function checkUser(){
+				var usernameValue = document.getElementById("user").value;
+				var reg=/^[\u4e00-\u9fa5]{2,5}$/;
+				var uspan=document.getElementById("userSpan");
+				if(usernameValue=="" ||usernameValue==null){
+					uspan.innerHTML="用户名不能为空";
+					uspan.style.color="red";
+					return false;
+				}else if(reg.test(usernameValue)){
+
+					uspan.innerHTML="用户名正确";
+					uspan.style.color="green";
+					return true;
+				}else{
+
+					uspan.innerHTML="用户名不符合规则";
+					uspan.style.color="red";
+					return false;
+				}
+			}
+			function checkPassword(){
+				var pwdValue = document.getElementById("password").value;
+				var reg=/^[a-z]\w{5,7}$/;
+				var pspan=document.getElementById("pwdSpan");
+				if(pwdValue == "" || pwdValue == null){
+					pspan.innerHTML="密码不能为空";
+					pspan.style.color="red";
+					return false;
+				}else if(reg.test(pwdValue)){
+					pspan.innerHTML="*密码正确";
+					pspan.style.color="green";
+					return true;
+				}else {
+					pspan.innerHTML= "*密码格式不正确";
+					pspan.style.color = "red";
+					return false;
+				}
+			}
+			function checkForm(){
+				var userOk = checkUser();
+				var pwdOk = checkPassword();
+				if(userOk && pwdOk){
+					alert("注册成功，将跳转到登录页面");
+					return true;
+				}
+				alert("请按提示完善信息后再注册");
+				return false;
+			}
+		</script>
+	</head>
+	<body>
+		<form action="login.html" method="get" onsubmit="return checkForm()" >
+		<div class="div01">
+			<table class="mytable" border="0">
+				<caption>注册页面</caption>
+
+				<tr height="35px">
+					<td>用户名：</td>
+					<td><input type="text" name="user"  id="user" onblur="checkUser()" /></td>
+					<td><span id="userSpan">*2-5个汉字</span> </td>
+				</tr>
+
+				<tr height="35px">
+					<td>性别:</td>
+					<td>
+						男<input type="radio" name="sex" id="bsex" value="1" checked="checked" />
+						女<input type="radio" name="sex" id="gsex" value="0" />
+					</td>
+				</tr>
+
+				<tr height="35px">
+					<td>密&nbsp;&nbsp;&nbsp;码：</td>
+					<td><input type="password" name="password"  id="password" onblur="checkPassword()" /></td>
+					<td><span id="pwdSpan"> </span></td>
+				</tr>
+
+				<tr class="hint-row">
+					<td></td>
+					<td colspan="2"><small class="hint">密码格式：以小写字母开头，长度 6-8 位（可包含字母/数字/下划线）</small></td>
+				</tr>
+
+				<tr height="35px">
+					<td>邮&nbsp;&nbsp;&nbsp;箱：</td>
+					<td><input type="email" name="mail"  id="mail" /></td>
+				</tr>
+
+				<tr height="35px">
+					<td>手机号：</td>
+					<td><input type="text" name="pnumber"  id="pnumber" /></td>
+				</tr>
+
+				<tr height="35px">
+					<td colspan="3" align="center"><input type="submit" value="注册"/></td>
+				</tr>
+
+				<tr>
+					<td colspan="3" align="center"><a href="login.html" style="font-weight: bold; color: red;">登录页面</a></td>
+				</tr>
+
+			</table>
+		</div>
+		</form>
+	</body>
+</html>

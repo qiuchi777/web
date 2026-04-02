@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>个人登录页面</title>
+    <link rel="stylesheet" type="text/css" href="css/login.css" />
+</head>
+<body>
+    <div class="div01">
+        <h1>登录</h1>
+        <form id="loginForm" action="main.html" method="get">
+            <div class="field">
+                <label for="user">用户名</label>
+                <input id="user" name="user" type="text" placeholder="请输入用户名" required />
+            </div>
+
+            <div class="field">
+                <label for="password">密码</label>
+                <input id="password" name="password" type="password" placeholder="请输入密码" required />
+            </div>
+
+            <div class="actions">
+                <button type="submit">登录</button>
+                <a href="register.html">还没有账号？去注册</a>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        const LOGIN_STATE_KEY = 'isLoggedIn';
+
+        function getSafeRedirectTarget() {
+            const params = new URLSearchParams(window.location.search);
+            const redirect = params.get('redirect');
+
+            if (!redirect) {
+                return 'main.html';
+            }
+
+            if (/^(https?:)?\/\//i.test(redirect) || redirect.includes('..')) {
+                return 'main.html';
+            }
+
+            if (!/\.html($|\?)/i.test(redirect)) {
+                return 'main.html';
+            }
+
+            return redirect;
+        }
+
+        const loginForm = document.getElementById('loginForm');
+        if (loginForm) {
+            loginForm.addEventListener('submit', (event) => {
+                event.preventDefault();
+                try {
+                    localStorage.setItem(LOGIN_STATE_KEY, '1');
+                } catch {
+                    // Ignore storage errors and continue redirect.
+                }
+                const redirectTarget = getSafeRedirectTarget();
+                window.location.href = redirectTarget;
+            });
+        }
+    </script>
+</body>
+</html>

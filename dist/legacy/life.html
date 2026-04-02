@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>我的生活</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            min-height: 100vh;
+            padding: 24px;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background: radial-gradient(circle at top, #f5f9ff, #e4efff 55%, #d6e5fb);
+            overflow-y: auto;
+        }
+        .wrap {
+            max-width: 980px;
+            margin: 0 auto;
+            background: #fff;
+            border: 1px solid #c5d3eb;
+            border-radius: 16px;
+            padding: 20px 24px 30px;
+            box-shadow: 0 20px 40px rgba(44, 112, 255, 0.12);
+        }
+        h1 {
+            margin: 0 0 8px;
+            text-align: center;
+            letter-spacing: 0.04em;
+        }
+        .tip {
+            margin: 0 0 18px;
+            text-align: center;
+            color: #475569;
+            font-size: 14px;
+        }
+        .photo-wall {
+            position: relative;
+            height: 68vh;
+            min-height: 420px;
+            border: 1px dashed #b4c6e5;
+            border-radius: 12px;
+            background: linear-gradient(180deg, #f8fbff, #edf4ff);
+            overflow: hidden;
+        }
+        .photo {
+            --offset: 0px;
+            --angle: 0deg;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 190px;
+            aspect-ratio: 3 / 4;
+            border-radius: 12px;
+            border: 8px solid #fff;
+            box-shadow: 0 14px 20px rgba(15, 23, 42, 0.22);
+            object-fit: cover;
+            transform: translate(-50%, -50%) translateX(var(--offset)) rotate(var(--angle)) scale(0.84);
+            transition: transform 0.5s ease, box-shadow 0.5s ease, z-index 0s linear 0.12s;
+            z-index: 1;
+            cursor: pointer;
+        }
+        .photo:hover {
+            transform: translate(-50%, -50%) translateX(0) rotate(0deg) scale(1);
+            box-shadow: 0 28px 42px rgba(15, 23, 42, 0.35);
+            z-index: 50;
+            transition: transform 0.5s ease, box-shadow 0.5s ease, z-index 0s;
+        }
+        .photo.is-active {
+            transform: translate(-50%, -50%) translateX(0) rotate(0deg) scale(1);
+            box-shadow: 0 28px 42px rgba(15, 23, 42, 0.35);
+            z-index: 60;
+        }
+        .viewer {
+            position: fixed;
+            inset: 0;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            background: rgba(2, 8, 23, 0.88);
+            z-index: 999;
+            padding: 22px;
+        }
+        .viewer.open {
+            display: flex;
+        }
+        .viewer img {
+            max-width: 94vw;
+            max-height: 92vh;
+            width: auto;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+            object-fit: contain;
+            background: #fff;
+        }
+        .viewer-tip {
+            position: absolute;
+            top: 14px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #e2e8f0;
+            font-size: 13px;
+            letter-spacing: 0.03em;
+        }
+        .back {
+            margin-top: 16px;
+            text-align: center;
+        }
+        .life-desc {
+            margin-top: 16px;
+            padding: 14px 16px;
+            border: 1px solid #d7e5ff;
+            border-radius: 12px;
+            background: linear-gradient(180deg, #f8fbff, #f2f7ff);
+        }
+        .life-desc h2 {
+            margin: 0 0 8px;
+            font-size: 1.05rem;
+            color: #1e3a8a;
+        }
+        .life-desc p {
+            margin: 0;
+            line-height: 1.75;
+            color: #334155;
+        }
+        .life-tags {
+            margin-top: 12px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .life-tags span {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 999px;
+            border: 1px solid #bfdbfe;
+            background: #eff6ff;
+            color: #1d4ed8;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        a { color: #2c70ff; text-decoration: none; font-weight: 600; }
+        a:hover { text-decoration: underline; }
+        @media (max-width: 760px) {
+            .photo { width: 138px; border-width: 6px; }
+            .photo-wall { height: 62vh; min-height: 360px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="wrap">
+        <h1>我的生活</h1>
+
+        <div class="photo-wall">
+            <img class="photo" src="15636ee506be2daaab1256b3fe297a56.jpg" alt="生活照片1" style="--offset:-318px; --angle:-34deg;" />
+            <img class="photo" src="a70ebca481f544950b1c19e73aee4602.jpg" alt="生活照片2" style="--offset:-216px; --angle:-22deg;" />
+            <img class="photo" src="7030cd1b435faf590a0355548898beb1.jpg" alt="生活照片3" style="--offset:-108px; --angle:-11deg;" />
+            <img class="photo" src="a8744b96c8c62bd0fd346e5f638b07cd.jpg" alt="生活照片4" style="--offset:0px; --angle:0deg;" />
+            <img class="photo" src="2dac2dc390e2e77a41277129b3b9e207.jpg" alt="生活照片5" style="--offset:108px; --angle:11deg;" />
+            <img class="photo" src="38741ef0d2f0c5dfddb674903a8ce4a4.jpg" alt="生活照片6" style="--offset:216px; --angle:22deg;" />
+        </div>
+
+        <section class="life-desc" aria-label="生活描述">
+            <h2>我的生活状态</h2>
+            <p>我的生活在“学习、兴趣、放松”之间保持平衡。平时会安排固定时间学习新知识，也会通过拍照、运动和游戏给自己充电，让每一天都过得更充实。</p>
+            <p>我希望把日常过成有节奏、有目标也有温度的样子：认真对待每一件小事，也保留对新鲜事物的好奇心。</p>
+            <div class="life-tags" aria-label="生活关键词">
+                <span>学习</span>
+                <span>记录</span>
+                <span>运动</span>
+                <span>探索</span>
+                <span>热爱</span>
+            </div>
+        </section>
+
+        <p class="back"><a href="main.html">返回主界面</a></p>
+    </div>
+
+    <div class="viewer" id="viewer">
+        <p class="viewer-tip">点击空白处或按 Esc 退出预览</p>
+        <img id="viewerImage" src="" alt="大图预览" />
+    </div>
+
+    <script>
+        const photoWall = document.querySelector(".photo-wall");
+        const photos = photoWall.querySelectorAll(".photo");
+        const viewer = document.getElementById("viewer");
+        const viewerImage = document.getElementById("viewerImage");
+
+        function closeViewer() {
+            viewer.classList.remove("open");
+        }
+
+        photos.forEach((photo) => {
+            photo.addEventListener("click", function (event) {
+                event.stopPropagation();
+
+                if (this.classList.contains("is-active")) {
+                    return;
+                }
+
+                photos.forEach((item) => item.classList.remove("is-active"));
+                this.classList.add("is-active");
+            });
+
+            photo.addEventListener("dblclick", function (event) {
+                event.stopPropagation();
+                viewerImage.src = this.src;
+                viewerImage.alt = this.alt || "大图预览";
+                viewer.classList.add("open");
+            });
+        });
+
+        photoWall.addEventListener("click", function () {
+            photos.forEach((item) => item.classList.remove("is-active"));
+        });
+
+        viewer.addEventListener("click", function (event) {
+            if (event.target === viewer) {
+                closeViewer();
+            }
+        });
+
+        document.addEventListener("keydown", function (event) {
+            if (event.key === "Escape") {
+                closeViewer();
+            }
+        });
+    </script>
+</body>
+</html>

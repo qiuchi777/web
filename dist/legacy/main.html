@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>个人主界面</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            background: #eaf4ff;
+        }
+
+        body {
+            margin: 0;
+            padding: clamp(12px, 2vw, 18px);
+            max-width: 1100px;
+            margin-inline: auto;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        }
+
+        h1 {
+            text-align: center;
+            margin: 0 0 0.5rem;
+            font-size: clamp(1.4rem, 2.6vw, 2rem);
+        }
+
+        .top-actions {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 0.4rem;
+        }
+
+        .logout-btn {
+            padding: 6px 12px;
+            border-radius: 10px;
+            border: 1px solid #d1d5db;
+            background: #f9fafb;
+            font: inherit;
+            cursor: pointer;
+        }
+
+        .logout-btn:hover {
+            background: #eef2f7;
+        }
+
+        .clock-wrap {
+            margin-top: 0.5rem;
+        }
+
+        .box-container {
+            margin-top: 0.75rem;
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: clamp(10px, 1.5vw, 16px);
+        }
+
+        .box {
+            padding: clamp(10px, 1.5vw, 16px);
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            background: #fafafa;
+            cursor: pointer;
+        }
+
+        .login-modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.45);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            z-index: 999;
+        }
+
+        .login-modal-overlay.is-open {
+            display: flex;
+        }
+
+        .login-modal {
+            width: min(420px, 100%);
+            background: #fff;
+            border-radius: 12px;
+            border: 1px solid #e5e7eb;
+            padding: 16px;
+        }
+
+        .login-modal h2 {
+            margin: 0 0 8px;
+            font-size: 1.1rem;
+        }
+
+        .login-modal p {
+            margin: 0 0 12px;
+            color: #374151;
+        }
+
+        .login-modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .login-modal-actions button {
+            padding: 8px 12px;
+            border-radius: 10px;
+            border: 1px solid #d1d5db;
+            background: #f9fafb;
+            font: inherit;
+        }
+
+        .box a {
+            display: block;
+            margin-top: 0.25rem;
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #1f2937;
+            text-decoration: none;
+        }
+
+        .box a:hover {
+            text-decoration: underline;
+        }
+
+        .hero-img {
+            display: block;
+            width: 100%;
+            height: clamp(90px, 16vh, 140px);
+            object-fit: cover;
+            border-radius: 10px;
+            margin-top: 0.5rem;
+        }
+
+        #clock {
+            font-size: clamp(1rem, 1.6vw, 1.2rem);
+            font-weight: 600;
+            margin-top: 0.25rem;
+        }
+
+        .weather-wrap {
+            margin-top: 0.75rem;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            background: #fafafa;
+            text-align: center;
+            color: #374151;
+        }
+
+        .weather-retry-btn {
+            margin-left: 8px;
+            padding: 4px 10px;
+            border-radius: 8px;
+            border: 1px solid #d1d5db;
+            background: #f9fafb;
+            font: inherit;
+            cursor: pointer;
+        }
+
+        .guestbook-fab {
+            position: fixed;
+            right: 20px;
+            bottom: 20px;
+            z-index: 950;
+            width: 56px;
+            height: 56px;
+            border: 0;
+            border-radius: 999px;
+            background: #2c70ff;
+            color: #fff;
+            font-weight: 700;
+            box-shadow: 0 10px 20px rgba(44, 112, 255, 0.35);
+            cursor: pointer;
+        }
+
+        .guestbook-fab:hover {
+            background: #1f5de0;
+        }
+
+        .guestbook-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.45);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            z-index: 1000;
+        }
+
+        .guestbook-overlay.is-open {
+            display: flex;
+        }
+
+        .guestbook-modal {
+            width: min(520px, 100%);
+            max-height: min(80vh, 720px);
+            overflow: auto;
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 16px;
+        }
+
+        .guestbook-title {
+            margin: 0 0 10px;
+            font-size: 1.1rem;
+        }
+
+        .guestbook-field {
+            display: block;
+            width: 100%;
+            margin: 0 0 10px;
+            padding: 9px 10px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font: inherit;
+        }
+
+        .guestbook-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+        }
+
+        .guestbook-actions button {
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: 1px solid #d1d5db;
+            background: #f9fafb;
+            font: inherit;
+            cursor: pointer;
+        }
+
+        .guestbook-list {
+            margin-top: 12px;
+            display: grid;
+            gap: 10px;
+        }
+
+        .guestbook-item {
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            padding: 10px;
+            background: #fafafa;
+        }
+
+        .guestbook-meta {
+            margin: 0 0 6px;
+            color: #475569;
+            font-size: 0.9rem;
+        }
+
+        .guestbook-text {
+            margin: 0;
+            color: #1f2937;
+            line-height: 1.5;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        @media (max-width: 720px) {
+            .box-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <div class="top-actions">
+        <button type="button" class="logout-btn" id="logoutBtn">退出登录</button>
+    </div>
+
+    <h1>欢迎来到我的个人网站</h1>
+
+    <div class="clock-wrap">
+        <div>当前时间：</div>
+        <div id="clock" aria-live="polite"></div>
+    </div>
+
+    <div class="box-container">
+        <section class="box" id="box1">
+            <a href="resume.html">个人简历</a>
+            <img class="hero-img" src="grey.jpg" alt="个人简历图片" />
+        </section>
+        <section class="box" id="box2">
+            <a href="ideal.html">我的理想</a>
+            <img class="hero-img" src="blue.jpg" alt="个人简历图片" />
+        </section>
+        <section class="box" id="box3">
+            <a href="life.html">我的生活</a>
+            <img class="hero-img" src="white.jpg" alt="个人简历图片" />
+        </section>
+        <section class="box" id="box4">
+            <a href="study.html">学习内容</a>
+            <img class="hero-img" src="yellow.jpg" alt="个人简历图片" />
+        </section>
+    </div>
+
+    <div class="weather-wrap" id="weather" aria-live="polite">天气：正在获取定位信息…</div>
+
+    <div class="login-modal-overlay" id="loginModalOverlay" role="dialog" aria-modal="true" aria-labelledby="loginModalTitle" style="display: none;">
+        <div class="login-modal">
+            <h2 id="loginModalTitle">需要登录</h2>
+            <p>该内容需要登录后查看。</p>
+            <div class="login-modal-actions">
+                <button type="button" id="loginModalCancel">取消</button>
+                <button type="button" id="loginModalGo">去登录</button>
+            </div>
+        </div>
+    </div>
+
+    <button type="button" class="guestbook-fab" id="guestbookFab" aria-label="打开留言板">留言</button>
+
+    <div class="guestbook-overlay" id="guestbookOverlay" role="dialog" aria-modal="true" aria-labelledby="guestbookTitle">
+        <div class="guestbook-modal">
+            <h2 class="guestbook-title" id="guestbookTitle">留言板</h2>
+            <input id="guestbookName" class="guestbook-field" type="text" placeholder="你的昵称（可选）" maxlength="20" />
+            <textarea id="guestbookText" class="guestbook-field" rows="4" placeholder="写下你的留言..." maxlength="300"></textarea>
+            <div class="guestbook-actions">
+                <button type="button" id="guestbookCancel">关闭</button>
+                <button type="button" id="guestbookSubmit">发布留言</button>
+            </div>
+            <div class="guestbook-list" id="guestbookList" aria-live="polite"></div>
+        </div>
+    </div>
+
+    <script>
+        function formatTwoDigits(value) {
+            return value.toString().padStart(2, '0');
+        }
+
+        function updateClock() {
+            const now = new Date();
+            const hours = formatTwoDigits(now.getHours());
+            const minutes = formatTwoDigits(now.getMinutes());
+            const seconds = formatTwoDigits(now.getSeconds());
+            const year = now.getFullYear();
+            const month = formatTwoDigits(now.getMonth() + 1);
+            const day = formatTwoDigits(now.getDate());
+            const weekDay = ['日', '一', '二', '三', '四', '五', '六'][now.getDay()];
+
+            document.getElementById('clock').textContent =
+                `${year}-${month}-${day} 星期${weekDay} ${hours}:${minutes}:${seconds}`;
+        }
+
+        // 初始化并每秒更新一次
+        updateClock();
+        setInterval(updateClock, 1000);
+
+        const weatherEl = document.getElementById('weather');
+
+        function setWeatherText(text) {
+            if (!weatherEl) return;
+            weatherEl.textContent = text;
+        }
+
+        function showLocationFailedWithRetry() {
+            if (!weatherEl) return;
+            weatherEl.innerHTML = '天气：获取定位失败 <button type="button" class="weather-retry-btn" id="weatherRetryBtn">点击重试</button>';
+            const retryBtn = document.getElementById('weatherRetryBtn');
+            if (retryBtn) {
+                retryBtn.addEventListener('click', () => {
+                    initWeather();
+                });
+            }
+        }
+
+        function describeWeatherCode(code) {
+            const map = {
+                0: '晴',
+                1: '基本晴朗',
+                2: '局部多云',
+                3: '多云',
+                45: '雾',
+                48: '雾凇',
+                51: '毛毛雨',
+                53: '小雨',
+                55: '中雨',
+                56: '冻毛毛雨',
+                57: '冻雨',
+                61: '小雨',
+                63: '中雨',
+                65: '大雨',
+                66: '冻雨',
+                67: '强冻雨',
+                71: '小雪',
+                73: '中雪',
+                75: '大雪',
+                77: '雪粒',
+                80: '阵雨',
+                81: '强阵雨',
+                82: '暴阵雨',
+                85: '阵雪',
+                86: '强阵雪',
+                95: '雷暴',
+                96: '雷暴伴小冰雹',
+                99: '雷暴伴大冰雹'
+            };
+
+            if (typeof code !== 'number') return '未知天气';
+            return map[code] ?? `未知天气(${code})`;
+        }
+
+        async function fetchJson(url) {
+            const response = await fetch(url, { method: 'GET' });
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}`);
+            }
+            return response.json();
+        }
+
+        function getCurrentPositionAsync(options) {
+            return new Promise((resolve, reject) => {
+                if (!navigator.geolocation) {
+                    reject(new Error('Geolocation not supported'));
+                    return;
+                }
+                navigator.geolocation.getCurrentPosition(resolve, reject, options);
+            });
+        }
+
+        async function resolvePlaceName(latitude, longitude) {
+            try {
+                const geoUrl = `https://geocoding-api.open-meteo.com/v1/reverse?latitude=${encodeURIComponent(latitude)}&longitude=${encodeURIComponent(longitude)}&language=zh&format=json`;
+                const geoData = await fetchJson(geoUrl);
+                const place = geoData?.results?.[0];
+                const nameParts = [place?.admin1, place?.admin2, place?.name].filter(Boolean);
+                if (nameParts.length) {
+                    return nameParts.join(' / ');
+                }
+            } catch {
+                // Try fallback source.
+            }
+
+            try {
+                const fallbackUrl = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${encodeURIComponent(latitude)}&longitude=${encodeURIComponent(longitude)}&localityLanguage=zh`;
+                const fallbackData = await fetchJson(fallbackUrl);
+                const nameParts = [
+                    fallbackData?.principalSubdivision,
+                    fallbackData?.city,
+                    fallbackData?.locality
+                ].filter(Boolean);
+                if (nameParts.length) {
+                    return nameParts.join(' / ');
+                }
+            } catch {
+                // Ignore and return default.
+            }
+
+            return '地区名获取失败';
+        }
+
+        async function loadWeatherByLocation(latitude, longitude) {
+            const placeText = await resolvePlaceName(latitude, longitude);
+
+            // Weather (Open-Meteo)
+            const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${encodeURIComponent(latitude)}&longitude=${encodeURIComponent(longitude)}&current=temperature_2m,weather_code&timezone=auto`;
+            const weatherData = await fetchJson(weatherUrl);
+            const temp = weatherData?.current?.temperature_2m;
+            const unit = weatherData?.current_units?.temperature_2m ?? '°C';
+            const code = weatherData?.current?.weather_code;
+            const desc = describeWeatherCode(code);
+
+            const locationPrefix = `所在地区：${placeText}；天气：`;
+            if (typeof temp === 'number') {
+                setWeatherText(`${locationPrefix}${desc}，${temp}${unit}`);
+            } else {
+                setWeatherText(`${locationPrefix}${desc}`);
+            }
+        }
+
+        async function initWeather() {
+            if (!weatherEl) return;
+
+            // Geolocation generally requires a secure context (https/localhost).
+            if (!window.isSecureContext) {
+                showLocationFailedWithRetry();
+                return;
+            }
+
+            setWeatherText('天气：正在获取定位信息…');
+
+            try {
+                const position = await getCurrentPositionAsync({
+                    enableHighAccuracy: false,
+                    timeout: 8000,
+                    maximumAge: 5 * 60 * 1000
+                });
+
+                const { latitude, longitude } = position.coords;
+                setWeatherText('天气：正在获取天气数据…');
+                await loadWeatherByLocation(latitude, longitude);
+            } catch {
+                showLocationFailedWithRetry();
+            }
+        }
+
+        initWeather();
+
+        const boxContainer = document.querySelector('.box-container');
+        const loginModalOverlay = document.getElementById('loginModalOverlay');
+        const loginModalCancel = document.getElementById('loginModalCancel');
+        const loginModalGo = document.getElementById('loginModalGo');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const guestbookFab = document.getElementById('guestbookFab');
+        const guestbookOverlay = document.getElementById('guestbookOverlay');
+        const guestbookCancel = document.getElementById('guestbookCancel');
+        const guestbookSubmit = document.getElementById('guestbookSubmit');
+        const guestbookName = document.getElementById('guestbookName');
+        const guestbookText = document.getElementById('guestbookText');
+        const guestbookList = document.getElementById('guestbookList');
+        const LOGIN_STATE_KEY = 'isLoggedIn';
+        const GUESTBOOK_STORAGE_KEY = 'guestbookMessages';
+        let pendingRedirectHref = 'main.html';
+
+        function isLoggedIn() {
+            try {
+                return localStorage.getItem(LOGIN_STATE_KEY) === '1';
+            } catch {
+                return false;
+            }
+        }
+
+        function updateAuthButton() {
+            if (!logoutBtn) return;
+            logoutBtn.textContent = isLoggedIn() ? '退出登录' : '点击登录';
+        }
+
+        function getGuestbookMessages() {
+            try {
+                const raw = localStorage.getItem(GUESTBOOK_STORAGE_KEY);
+                if (!raw) return [];
+                const data = JSON.parse(raw);
+                return Array.isArray(data) ? data : [];
+            } catch {
+                return [];
+            }
+        }
+
+        function saveGuestbookMessages(messages) {
+            try {
+                localStorage.setItem(GUESTBOOK_STORAGE_KEY, JSON.stringify(messages));
+            } catch {
+                return;
+            }
+        }
+
+        function renderGuestbook() {
+            if (!guestbookList) return;
+            const messages = getGuestbookMessages();
+            if (!messages.length) {
+                guestbookList.innerHTML = '<div class="guestbook-item"><p class="guestbook-meta">还没有留言</p><p class="guestbook-text">来写下第一条吧～</p></div>';
+                return;
+            }
+
+            guestbookList.innerHTML = messages
+                .map((message) => {
+                    const displayName = String(message.name || '访客')
+                        .replace(/&/g, '&amp;')
+                        .replace(/</g, '&lt;')
+                        .replace(/>/g, '&gt;');
+                    const displayTime = String(message.time || '')
+                        .replace(/&/g, '&amp;')
+                        .replace(/</g, '&lt;')
+                        .replace(/>/g, '&gt;');
+                    const displayText = String(message.text || '')
+                        .replace(/&/g, '&amp;')
+                        .replace(/</g, '&lt;')
+                        .replace(/>/g, '&gt;');
+
+                    return `<div class="guestbook-item"><p class="guestbook-meta">${displayName} · ${displayTime}</p><p class="guestbook-text">${displayText}</p></div>`;
+                })
+                .join('');
+        }
+
+        function openGuestbook() {
+            if (!guestbookOverlay) return;
+            renderGuestbook();
+            guestbookOverlay.classList.add('is-open');
+            guestbookText?.focus();
+        }
+
+        function closeGuestbook() {
+            if (!guestbookOverlay) return;
+            guestbookOverlay.classList.remove('is-open');
+        }
+
+        function openLoginModal() {
+            if (!loginModalOverlay) return;
+            loginModalOverlay.classList.add('is-open');
+            loginModalOverlay.style.display = '';
+        }
+
+        function closeLoginModal() {
+            if (!loginModalOverlay) return;
+            loginModalOverlay.classList.remove('is-open');
+            loginModalOverlay.style.display = 'none';
+        }
+
+        if (loginModalCancel) {
+            loginModalCancel.addEventListener('click', closeLoginModal);
+        }
+
+        if (loginModalGo) {
+            loginModalGo.addEventListener('click', () => {
+                const redirect = encodeURIComponent(pendingRedirectHref || 'main.html');
+                window.location.href = `login.html?redirect=${redirect}`;
+            });
+        }
+
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', () => {
+                if (isLoggedIn()) {
+                    try {
+                        localStorage.removeItem(LOGIN_STATE_KEY);
+                    } catch {
+                        // Ignore storage errors.
+                    }
+                    closeLoginModal();
+                    updateAuthButton();
+                    alert('已退出登录');
+                    return;
+                }
+
+                const redirect = encodeURIComponent('main.html');
+                window.location.href = `login.html?redirect=${redirect}`;
+            });
+        }
+
+        updateAuthButton();
+
+        if (boxContainer) {
+            boxContainer.addEventListener('click', (event) => {
+                const targetBox = event.target.closest('.box');
+
+                if (!targetBox || !boxContainer.contains(targetBox)) {
+                    return;
+                }
+
+                const targetLink = targetBox.querySelector('a[href]');
+
+                if (!targetLink) {
+                    return;
+                }
+
+                if (isLoggedIn()) {
+                    return;
+                }
+
+                event.preventDefault();
+                pendingRedirectHref = targetLink.getAttribute('href') || 'main.html';
+                openLoginModal();
+            });
+        }
+
+        if (guestbookFab) {
+            guestbookFab.addEventListener('click', openGuestbook);
+        }
+
+        if (guestbookCancel) {
+            guestbookCancel.addEventListener('click', closeGuestbook);
+        }
+
+        if (guestbookOverlay) {
+            guestbookOverlay.addEventListener('click', (event) => {
+                if (event.target === guestbookOverlay) {
+                    closeGuestbook();
+                }
+            });
+        }
+
+        if (guestbookSubmit) {
+            guestbookSubmit.addEventListener('click', () => {
+                const text = guestbookText?.value?.trim() || '';
+                const name = guestbookName?.value?.trim() || '访客';
+
+                if (!text) {
+                    alert('请输入留言内容');
+                    return;
+                }
+
+                const messages = getGuestbookMessages();
+                const now = new Date();
+                const time = `${now.getFullYear()}-${formatTwoDigits(now.getMonth() + 1)}-${formatTwoDigits(now.getDate())} ${formatTwoDigits(now.getHours())}:${formatTwoDigits(now.getMinutes())}`;
+
+                messages.unshift({
+                    name,
+                    text,
+                    time
+                });
+
+                const limitedMessages = messages.slice(0, 30);
+                saveGuestbookMessages(limitedMessages);
+
+                if (guestbookText) {
+                    guestbookText.value = '';
+                }
+
+                renderGuestbook();
+            });
+        }
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') {
+                closeGuestbook();
+            }
+        });
+
+        renderGuestbook();
+    </script>
+</body>
+</html>

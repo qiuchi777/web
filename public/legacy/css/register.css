@@ -1,0 +1,129 @@
+/* 注册页样式：让主体居中并做成卡片布局 */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    padding: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background: #f7f7f7;
+}
+
+.div01 {
+    width: min(720px, 100%);
+    padding: 24px 28px;
+    border: 2px solid #9ca3af;
+    border-radius: 12px;
+    background: #fff;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+}
+
+.mytable {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 10px;
+}
+
+caption {
+    caption-side: top;
+    padding-bottom: 12px;
+    font-weight: 700;
+    font-size: 1.4rem;
+    color: #1f2937;
+    text-align: center;
+}
+
+.mytable td {
+    padding: 6px 8px;
+    vertical-align: middle;
+}
+
+.mytable td:first-child {
+    width: 110px;
+    color: #111827;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="email"] {
+    width: 100%;
+    max-width: 360px;
+    padding: 10px 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    outline: none;
+    font-size: 14px;
+    background: #fff;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="email"]:focus {
+    border-color: #93c5fd;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+input[type="radio"] {
+    margin: 0 6px 0 10px;
+}
+
+input[type="submit"] {
+    width: 160px;
+    padding: 10px 14px;
+    border: none;
+    border-radius: 10px;
+    background: #2c70ff;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+input[type="submit"]:hover {
+    filter: brightness(0.95);
+}
+
+#userSpan,
+#pwdSpan {
+    font-size: 13px;
+}
+
+.hint-row td {
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.hint {
+    display: block;
+    font-size: 12px;
+    color: #6b7280;
+    line-height: 1.2;
+}
+
+@media (max-width: 520px) {
+    body {
+        padding: 14px;
+        align-items: flex-start;
+    }
+
+    .div01 {
+        padding: 18px 16px;
+    }
+
+    .mytable td:first-child {
+        width: 88px;
+    }
+
+    input[type="submit"] {
+        width: 100%;
+        max-width: 360px;
+    }
+}
