@@ -1,5 +1,5 @@
 <template>
-  <iframe :src="`/legacy/${file}`" class="frame" :title="title"></iframe>
+  <iframe :src="iframeSrc" class="frame" :title="title"></iframe>
 </template>
 
 <script>
@@ -13,6 +13,11 @@ export default {
     file: {
       type: String,
       required: true
+    }
+  },
+  computed: {
+    iframeSrc() {
+      return `${process.env.BASE_URL}legacy/${this.file}`
     }
   }
 }
